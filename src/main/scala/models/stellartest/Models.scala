@@ -1,3 +1,5 @@
+package models.stellartest
+
 case class Embedded (
                       records: Seq[Record]
                     )
