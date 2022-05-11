@@ -70,7 +70,7 @@ case class Record(
                      memo_bytes: Option[String]
                    )
 
-case class RootInterface (
+case class TransactionsQueryResult(
                            _links: Links,
                            _embedded: Embedded
                          )
