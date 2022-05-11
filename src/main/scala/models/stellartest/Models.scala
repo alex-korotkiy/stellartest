@@ -44,7 +44,7 @@ case class Preconditions (
 case class Record(
                      _links: Links1,
                      id: String,
-                     paging_token: String,
+                     paging_token: Long,
                      successful: Boolean,
                      hash: String,
                      ledger: Int,
