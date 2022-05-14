@@ -21,7 +21,7 @@ class TransactionsPersister(startLedger: Int = 0, endLedger: Int = Int.MaxValue,
   def saveTransactions(records: Seq[Record]): Unit = {
     val tokens = records.map(r => r.paging_token)
     if (tokens.isEmpty) return
-    records.filter(r=> r.ledger>=startLedger && r.ledger <= endLedger).foreach(Db.upsertRecord)
+    records.filter(r=> r.ledger >= startLedger && r.ledger <= endLedger).foreach(Db.upsertRecord)
     val minToken = tokens.min
     val maxToken = tokens.max
     adjustBorders(Borders(minToken, maxToken))

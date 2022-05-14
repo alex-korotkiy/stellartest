@@ -8,7 +8,7 @@ import io.circe.syntax._
 import models.stellartest.TransactionsQueryResult
 import utils.Http
 
-object AppRun {
+object AppRunTest {
   def main(args: Array[String]): Unit = {
 
     val json = Http.get("https://horizon-testnet.stellar.org/transactions?limit=50&order=desc").get
