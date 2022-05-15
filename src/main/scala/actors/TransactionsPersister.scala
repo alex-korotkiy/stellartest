@@ -1,14 +1,24 @@
 package actors
 
-import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.Behaviors
-import dto.Borders
+import akka.NotUsed
+import akka.actor.typed.scaladsl.{AbstractBehavior, ActorContext, Behaviors}
+import akka.actor.typed._
+import dto.{Borders, Configuration}
 import messages._
 import models.stellartest.Record
 import utils.Db
 
-class TransactionsPersister(startLedger: Int = 0, endLedger: Int = Int.MaxValue, var borders: Option[Borders]) {
-  def apply(): Behavior[TransactionsMessage] = Behaviors.setup { ctx =>
+object TransactionsPersister {
+
+  var startLedger: Int = 0
+  var endLedger: Int = Int.MaxValue
+  var borders: Option[Borders] = None
+
+  def apply(configuration: Configuration, borders: Option[Borders]): Behavior[TransactionsMessage] = Behaviors.setup { ctx =>
+
+    this.startLedger = configuration.startLedger
+    this.endLedger = configuration.endLedger
+    this.borders = borders
 
     Behaviors.receiveMessage {
       case TransactionsData(queryResult) =>

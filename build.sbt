@@ -1,6 +1,6 @@
 ThisBuild / version := "0.1.0-SNAPSHOT"
 
-ThisBuild / scalaVersion := "2.13.8"
+ThisBuild / scalaVersion := "2.13.3"
 
 val circeVersion = "0.14.1"
 lazy val akkaVersion = "2.6.9"
@@ -14,10 +14,11 @@ libraryDependencies ++= Seq(
 libraryDependencies ++=Seq(
   "com.lihaoyi" %% "requests" % "0.7.0",
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
+  "ch.qos.logback" % "logback-classic" % "1.2.3"
 )
 
 
 lazy val root = (project in file("."))
   .settings(
-    name := "RawConcept"
+    name := "root"
   )

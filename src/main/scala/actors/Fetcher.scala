@@ -1,20 +1,18 @@
 package actors
 
-import akka.actor.Scheduler
 import akka.actor.typed.{ActorRef, ActorSystem, Behavior}
 import akka.actor.typed.scaladsl.Behaviors
 import dto.{Backward, Direction, Forward}
 import messages.{FetchMessage, FetchTransactions, TransactionsData}
-import utils.Http
 import utils.StUtils.getTransactions
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration.{Duration, FiniteDuration}
 import scala.util.{Failure, Success, Try}
 
-class Fetcher(direction: Direction, fetchDelayOnEmpty: FiniteDuration, retryDelay: FiniteDuration) {
+object Fetcher {
 
-  def apply(): Behavior[FetchMessage] = Behaviors.setup { ctx =>
+  def apply(direction: Direction, fetchDelayOnEmpty: FiniteDuration, retryDelay: FiniteDuration): Behavior[FetchMessage] = Behaviors.setup { ctx =>
 
     Behaviors.receiveMessage {
       case FetchTransactions(url, persister) =>
@@ -38,10 +36,7 @@ class Fetcher(direction: Direction, fetchDelayOnEmpty: FiniteDuration, retryDela
               }
             }
             else {
-              direction match {
-                case Forward => ctx.self ! FetchTransactions(tranResult._links.next.href, persister)
-                case Backward => ctx.self ! FetchTransactions(tranResult._links.prev.href, persister)
-              }
+              ctx.self ! FetchTransactions(tranResult._links.next.href, persister)
             }
 
           case Failure(exception) =>
