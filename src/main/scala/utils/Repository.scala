@@ -5,7 +5,7 @@ import dto.Borders
 import scala.collection.mutable
 import models.stellartest.Record
 
-object Db {
+object Repository {
 
   var lowBorder: Option[Long] = None
   var highBorder: Option[Long] = None

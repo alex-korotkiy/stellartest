@@ -14,7 +14,9 @@ libraryDependencies ++= Seq(
 libraryDependencies ++=Seq(
   "com.lihaoyi" %% "requests" % "0.7.0",
   "com.typesafe.akka" %% "akka-actor-typed" % akkaVersion,
-  "ch.qos.logback" % "logback-classic" % "1.2.3"
+  "ch.qos.logback" % "logback-classic" % "1.2.3",
+  "com.dimafeng"  %% "testcontainers-scala-mongodb" % "0.40.7",
+  "org.mongodb.scala" %% "mongo-scala-driver" % "4.6.0"
 )
 
 

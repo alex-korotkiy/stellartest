@@ -7,7 +7,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import dto.{Backward, Borders, Configuration, Forward}
 import messages.FetchTransactions
 import utils.Misc.retry
-import utils.{Db, StUtils}
+import utils.{Repository, StUtils}
 
 import scala.util.{Failure, Success}
 
@@ -26,15 +26,15 @@ object Starter {
         backwardFetcher ! FetchTransactions(backwardUrl , persister)
       }
 
-      val savedLedgers = Db.getLedgersRange()
-      val savedBorders = Db.getBorders
+      val savedLedgers = Repository.getLedgersRange()
+      val savedBorders = Repository.getBorders
 
       val doNarrow = savedLedgers._1 <= configuration.startLedger && savedLedgers._2 >= configuration.endLedger
 
       val borders = doNarrow match {
         case true => savedBorders
         case false =>
-          Db.clearBorders()
+          Repository.clearBorders()
           None
       }
 

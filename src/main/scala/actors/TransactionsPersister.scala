@@ -6,7 +6,7 @@ import akka.actor.typed._
 import dto.{Borders, Configuration}
 import messages._
 import models.stellartest.Record
-import utils.Db
+import utils.Repository
 
 object TransactionsPersister {
 
@@ -31,7 +31,7 @@ object TransactionsPersister {
   def saveTransactions(records: Seq[Record]): Unit = {
     val tokens = records.map(r => r.paging_token)
     if (tokens.isEmpty) return
-    records.filter(r=> r.ledger >= startLedger && r.ledger <= endLedger).foreach(Db.upsertRecord)
+    records.filter(r=> r.ledger >= startLedger && r.ledger <= endLedger).foreach(Repository.upsertRecord)
     val minToken = tokens.min
     val maxToken = tokens.max
     adjustBorders(Borders(minToken, maxToken))
@@ -42,12 +42,12 @@ object TransactionsPersister {
       case Some(bordersValue) =>
         val newLowBorder = List(bordersValue.low, interval.low).min
         val newHighBorder = List(bordersValue.high, interval.high).max
-        if (newLowBorder < bordersValue.low) Db.updateLowBorder(newLowBorder)
-        if (newHighBorder > bordersValue.high) Db.updateHighBorder(newHighBorder)
+        if (newLowBorder < bordersValue.low) Repository.updateLowBorder(newLowBorder)
+        if (newHighBorder > bordersValue.high) Repository.updateHighBorder(newHighBorder)
         borders = Some(Borders(newLowBorder, newHighBorder))
       case None =>
-        Db.updateLowBorder(interval.low)
-        Db.updateHighBorder(interval.high)
+        Repository.updateLowBorder(interval.low)
+        Repository.updateHighBorder(interval.high)
         borders = Some(interval)
     }
   }
