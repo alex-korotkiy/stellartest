@@ -1,5 +1,7 @@
 package utils
 
+import io.circe.Encoder
+import io.circe.syntax.EncoderOps
 import org.mongodb.scala.model.Filters
 import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase}
 import org.mongodb.scala.bson.collection._
@@ -23,6 +25,11 @@ object MongoUtils {
     deleteDocument(collection, key)
   }
 
+  def deleteAll(collectionName: String): DeleteResult = {
+    val collection: MongoCollection[Document] = database.getCollection[Document](collectionName)
+    Await.result(collection.deleteMany(Filters.empty()).toFuture(), Duration.Inf)
+  }
+
   def upsertDocument(collectionName: String, document: Document, key: Long): InsertOneResult = {
     val collection: MongoCollection[Document] = database.getCollection[Document](collectionName)
     deleteDocument(collection, key)
@@ -30,16 +37,9 @@ object MongoUtils {
     Await.result(collection.insertOne(newDoc.toBsonDocument()).toFuture(), Duration.Inf)
   }
 
-/*
-  def upsertObject[T, U](collectionName: String, instance: T,  key: T => U)(implicit encoder: Encoder[T]) = {
-    val collection = database.getCollection(collectionName)
-    val filter = Filters.eq("_id", key(instance))
-    val bson = Document(instance.asJson.toString())
-    val options = new UpdateOptions()
-    options.upsert(true)
-    val future = collection.updateOne(filter, bson, options).toFuture()
-    Await.result(future, Duration.Inf)
+  def upsertObject[T](collectionName: String, instance: T,  key: Long)(implicit encoder: Encoder[T]) = {
+    val document = Document(instance.asJson.toString())
+    upsertDocument(collectionName, document, key)
   }
 
- */
 }

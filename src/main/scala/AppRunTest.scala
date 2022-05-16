@@ -9,7 +9,9 @@ import org.mongodb.scala.bson.Document
 object AppRunTest {
 
   def main(args: Array[String]): Unit = {
+
     val simpleDoc = Document("name" -> "me")
     MongoUtils.upsertDocument("names", simpleDoc, 1)
+
   }
 }
