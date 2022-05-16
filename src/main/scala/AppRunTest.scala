@@ -1,17 +1,21 @@
-import dto.Configuration
+import dto.{Borders, Configuration}
 import io.circe.generic.auto.exportEncoder
 import utils.MongoUtils
 import io.circe.generic.auto._
-import io.circe.syntax._
-import org.mongodb.scala.bson.Document
 
 
 object AppRunTest {
 
   def main(args: Array[String]): Unit = {
 
-    val simpleDoc = Document("name" -> "me")
-    MongoUtils.upsertDocument("names", simpleDoc, 1)
+    val b1 = Borders(1,2)
+    val b2 = Borders(2,4)
 
+    MongoUtils.upsertObject("brdrs", b1, 1)
+    MongoUtils.upsertObject("brdrs", b2, 2)
+
+    val res = MongoUtils.getAllObjects[Borders]("brdrs")
+
+    println(res)
   }
 }

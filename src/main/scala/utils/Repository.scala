@@ -7,6 +7,9 @@ import models.stellartest.Record
 
 object Repository {
 
+  private val borders = "borders"
+  private val ledgers = "ledgers"
+
   var lowBorder: Option[Long] = None
   var highBorder: Option[Long] = None
 
