@@ -14,4 +14,11 @@ object Misc {
         retry(action, retryCount-1, delay)
     }
   }
+
+  def firstOfDefault[T](iterable: Iterable[T], default: T): T = {
+    if (iterable.isEmpty)
+      default
+    else
+      iterable.head
+  }
 }
