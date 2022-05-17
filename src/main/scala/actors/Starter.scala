@@ -38,6 +38,8 @@ object Starter {
           None
       }
 
+      Repository.saveLedgersRange(configuration.startLedger, configuration.endLedger)
+
       borders match {
         case Some(bordersValue) =>
           val startForwardUrl = s"${configuration.transactionsUrl}?cursor=${bordersValue.high}&limit=${configuration.batchSize}&order=asc"

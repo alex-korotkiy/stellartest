@@ -36,7 +36,7 @@ object Repository {
     MongoUtils.upsertObject(ledgers, SingleValue(end), 1)
   }
 
-  def upsertRecord(record: Record) = MongoUtils.upsertObject(records, record, record.id.toLong)
+  def upsertRecord(record: Record) = MongoUtils.upsertObject(records, record, record.paging_token)
 
   def updateLowBorder(value: Long): Unit = {
     MongoUtils.upsertObject(borders, SingleValue(value), 0)
